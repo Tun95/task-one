@@ -155,7 +155,7 @@ export function CustomModal({ visible, onCancel }: CustomModalProps) {
   );
 }
 
-// Define the types
+//Define the types
 type Question = {
   id: number;
   duration: string;
