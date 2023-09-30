@@ -1,0 +1,158 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-btn: #f4fbf7;
+  --color-add-btn: #a220cf;
+  --color-background: #d0f7fa;
+  --color-white: #fff;
+  --color-gray: #666666;
+  --color-light-gray: #c4c4c4;
+  --color-light-l-gray: #979797;
+  --color-input-border: #a0a0a0;
+  --color-red: #a80000;
+  --color-green: #00635b;
+  --color-blue: #1d4ed8;
+  --color-white: #ffffff;
+  --transition: all 400ms ease;
+  --color-black: #000000;
+  --border-sty: 1px solid #ebebeb;
+  --light-shadow: rgb(3 0 71 / 5%) 0px 1px 3px;
+  --box-shadow: 0 5px 10px 0 hsla(0, 0%, 73.3%, 0.4);
+  --container-width-lg: 95%;
+  --container-width-md: 97%;
+  --container-width-sm: 99%;
+}
+
+.app {
+  overflow: hidden;
+}
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-white);
+}
+body {
+  font-family: "Poppins", sans-serif;
+}
+.container {
+  width: var(--container-width-lg);
+  margin: auto;
+}
+
+.box_shadow {
+  box-shadow: var(--box-shadow);
+}
+
+.light_shadow {
+  box-shadow: var(--light-shadow);
+}
+
+.a_flex {
+  display: flex;
+  align-items: center;
+}
+.b_flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.c_flex {
+  display: flex;
+  justify-content: space-between;
+}
+.d_flex {
+  display: flex;
+}
+.f_flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+ul li {
+  list-style: none;
+}
+
+.light_shadow {
+  box-shadow: var();
+}
+input,
+button {
+  outline: none;
+  border: none;
+  background: transparent;
+}
+input {
+  font-size: 16px;
+}
+input::placeholder {
+  font-size: 14px;
+}
+textarea {
+  outline: none;
+  resize: none;
+  padding: 10px;
+  font-family: sans-serif;
+  font-size: 16px;
+}
+
+label {
+  cursor: default;
+}
+
+/*  */
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: var(--color-green);
+  border-color: var(--color-green);
+}
+
+/* Custom Checkbox Styles on Hover */
+.custom-checkbox .ant-checkbox-inner:focus {
+  background-color: #00cc00; /* Change this color to your desired green */
+  border-color: #00cc00; /* Change this color to your desired green */
+}
+
+.layout {
+  z-index: 2;
+}
+.nav_bar {
+  padding: 10px 5px;
+  height: 70px;
+  background-color: var(--color-white);
+}
+
+.menu_items {
+  height: 100%;
+}
+.menu_icon {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0px;
+}
+.menu_icon .icon {
+  cursor: pointer;
+}
+.menu_icon .close_icon {
+  position: absolute;
+  right: 20px;
+}
+.user_name {
+  width: 100%;
+  display: inline-flex;
+  position: relative;
+  top: 40px;
+  left: 23px;
+}
+.user_short {
+  background-color: var(--color-blue);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: var(--color-white);
+
+  /* top: 50%; */
+}
