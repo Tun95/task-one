@@ -4,7 +4,6 @@ import SideBar from "./common/sidebar/SideBar";
 import NavBar from "./common/navbar/NavBar";
 import "./App.css";
 import StepperScreen from "./screen/stepper/StepperScreen";
-import HomeScreen from "./screen/home/HomeScreen";
 
 const { Content } = Layout;
 
@@ -21,8 +20,7 @@ function App() {
             <Content>
               <NavBar />
               <Routes>
-                <Route path="/" element={<HomeScreen />} />
-                <Route path="/application" element={<StepperScreen />} />
+                <Route path="/" element={<StepperScreen />} />
               </Routes>
             </Content>
           </Layout>
