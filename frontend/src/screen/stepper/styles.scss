@@ -21,6 +21,20 @@
         padding: 20px 0px;
         font-size: 17px;
       }
+      /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+      @media screen and (max-width: 700px) {
+        padding: 10px 0px;
+        .step_text {
+          padding: 10px 0px;
+          font-size: 15px;
+        }
+      }
+      /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+      @media screen and (max-width: 545px) {
+        .step_text {
+          font-size: 13px;
+        }
+      }
     }
 
     .step_header.active {
@@ -29,6 +43,10 @@
       font-weight: bold;
       .step_text {
         border-right: none;
+      }
+      /*======= MEDIA QUERIES (SMALL DEVICES) =======*/
+      @media screen and (max-width: 700px) {
+        font-weight: 500;
       }
     }
 
