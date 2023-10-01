@@ -10,10 +10,12 @@ interface Question {
 
 function Profile() {
   const [modalPersonalVisible, setModalPersonalVisible] = useState(false);
-  const [educationSwitch, setEducationSwitch] = useState(true);
-  const [experienceSwitch, setExperienceSwitch] = useState(true);
-  const [resumeSwitch, setResumeSwitch] = useState(true);
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [switchStates, setSwitchStates] = useState<{ [key: string]: boolean }>({
+    education: true,
+    experience: true,
+    resume: true,
+  });
 
   const showPersonalModal = () => {
     setModalPersonalVisible(true);
@@ -25,6 +27,13 @@ function Profile() {
 
   const addQuestion = (question: Question) => {
     setQuestions([...questions, question]);
+  };
+
+  // Handle toggle of a specific switch
+  const handleSwitchToggle = (key: string) => {
+    const updatedSwitchStates = { ...switchStates };
+    updatedSwitchStates[key] = !updatedSwitchStates[key];
+    setSwitchStates(updatedSwitchStates);
   };
 
   return (
@@ -46,10 +55,10 @@ function Profile() {
                   </div>
                   <div className="switch a_flex">
                     <Switch
-                      defaultChecked={educationSwitch}
-                      onChange={(checked) => setEducationSwitch(checked)}
+                      checked={switchStates.education}
+                      onChange={() => handleSwitchToggle("education")}
                     />
-                    <small>{educationSwitch ? "Hide" : "Show"}</small>
+                    <small>{switchStates.education ? "Hide" : "Show"}</small>
                   </div>
                 </div>
               </div>
@@ -65,10 +74,10 @@ function Profile() {
                   </div>
                   <div className="switch a_flex">
                     <Switch
-                      defaultChecked={experienceSwitch}
-                      onChange={(checked) => setExperienceSwitch(checked)}
+                      checked={switchStates.experience}
+                      onChange={() => handleSwitchToggle("experience")}
                     />
-                    <small>{experienceSwitch ? "Hide" : "Show"}</small>
+                    <small>{switchStates.experience ? "Hide" : "Show"}</small>
                   </div>
                 </div>
               </div>
@@ -84,10 +93,10 @@ function Profile() {
                   </div>
                   <div className="switch a_flex">
                     <Switch
-                      defaultChecked={resumeSwitch}
-                      onChange={(checked) => setResumeSwitch(checked)}
+                      checked={switchStates.resume}
+                      onChange={() => handleSwitchToggle("resume")}
                     />
-                    <small>{resumeSwitch ? "Hide" : "Show"}</small>
+                    <small>{switchStates.resume ? "Hide" : "Show"}</small>
                   </div>
                 </div>
               </div>
@@ -104,10 +113,14 @@ function Profile() {
                     </div>
                     <div className="switch a_flex">
                       <Switch
-                        defaultChecked={resumeSwitch}
-                        onChange={(checked) => setResumeSwitch(checked)}
+                        checked={switchStates[question.id.toString()]}
+                        onChange={() =>
+                          handleSwitchToggle(question.id.toString())
+                        }
                       />
-                      <small>{resumeSwitch ? "Hide" : "Show"}</small>
+                      <small>
+                        {switchStates[question.id] ? "Hide" : "Show"}
+                      </small>
                     </div>
                   </div>
                 </div>

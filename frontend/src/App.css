@@ -105,15 +105,13 @@ label {
 }
 
 /*  */
+
 .ant-checkbox-checked .ant-checkbox-inner {
   background-color: var(--color-green);
   border-color: var(--color-green);
 }
-
-/* Custom Checkbox Styles on Hover */
-.custom-checkbox .ant-checkbox-inner:focus {
-  background-color: #00cc00; /* Change this color to your desired green */
-  border-color: #00cc00; /* Change this color to your desired green */
+.ant-checkbox-checked .ant-checkbox-inner:after {
+  border-color: var(--color-white) !important;
 }
 
 .layout {
@@ -140,6 +138,7 @@ label {
   position: absolute;
   right: 20px;
 }
+
 .user_name {
   width: 100%;
   display: inline-flex;
@@ -155,4 +154,11 @@ label {
   color: var(--color-white);
 
   /* top: 50%; */
+}
+
+.ant-switch {
+  background-color: var(--color-green); /* Change this to your desired color */
+}
+.ant-switch-checked {
+  background-color: var(--color-light-gray) !important;
 }

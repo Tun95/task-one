@@ -11,7 +11,16 @@ interface Question {
 function Personal() {
   const [modalVisible, setModalVisible] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [resumeSwitch, setResumeSwitch] = useState(true);
+  const [switchStates, setSwitchStates] = useState<{
+    [key: string]: boolean;
+  }>({
+    phone: true,
+    nationality: true,
+    residence: true,
+    idNumber: true,
+    dateOfBirth: true,
+    gender: true,
+  });
 
   const showModal = () => {
     setModalVisible(true);
@@ -23,6 +32,13 @@ function Personal() {
 
   const addQuestion = (question: Question) => {
     setQuestions([...questions, question]);
+  };
+
+  // Handle toggle of a specific switch
+  const handleSwitchToggle = (key: string) => {
+    const updatedSwitchStates = { ...switchStates };
+    updatedSwitchStates[key] = !updatedSwitchStates[key];
+    setSwitchStates(updatedSwitchStates);
   };
   return (
     <div className="personal_info">
@@ -47,6 +63,7 @@ function Personal() {
                 Email
               </label>
             </li>{" "}
+            {/* Phone */}
             <li className="form_group group">
               <div className="head f_flex">
                 <label className="label" htmlFor="phone">
@@ -57,13 +74,16 @@ function Personal() {
                     <Checkbox>Internal</Checkbox>
                   </div>
                   <div className="switch a_flex">
-                    <Switch defaultChecked />
-                    <small>Hide</small>
-                    {/* <small>Show</small> */}
+                    <Switch
+                      checked={switchStates.phone}
+                      onChange={() => handleSwitchToggle("phone")}
+                    />
+                    <small>{switchStates.phone ? "Hide" : "Show"}</small>
                   </div>
                 </div>
               </div>
-            </li>{" "}
+            </li>
+            {/* Nationality */}
             <li className="form_group group">
               <div className="head f_flex">
                 <label className="label" htmlFor="nationality">
@@ -74,13 +94,16 @@ function Personal() {
                     <Checkbox>Internal</Checkbox>
                   </div>
                   <div className="switch a_flex">
-                    <Switch defaultChecked />
-                    <small>Hide</small>
-                    {/* <small>Show</small> */}
+                    <Switch
+                      checked={switchStates.nationality}
+                      onChange={() => handleSwitchToggle("nationality")}
+                    />
+                    <small>{switchStates.nationality ? "Hide" : "Show"}</small>
                   </div>
                 </div>
               </div>
-            </li>{" "}
+            </li>
+            {/* Current Residence */}
             <li className="form_group group">
               <div className="head f_flex">
                 <label className="label" htmlFor="residence">
@@ -91,13 +114,16 @@ function Personal() {
                     <Checkbox>Internal</Checkbox>
                   </div>
                   <div className="switch a_flex">
-                    <Switch defaultChecked />
-                    <small>Hide</small>
-                    {/* <small>Show</small> */}
+                    <Switch
+                      checked={switchStates.residence}
+                      onChange={() => handleSwitchToggle("residence")}
+                    />
+                    <small>{switchStates.residence ? "Hide" : "Show"}</small>
                   </div>
                 </div>
               </div>
             </li>
+            {/* ID Number */}
             <li className="form_group group">
               <div className="head f_flex">
                 <label className="label" htmlFor="id number">
@@ -108,13 +134,16 @@ function Personal() {
                     <Checkbox>Internal</Checkbox>
                   </div>
                   <div className="switch a_flex">
-                    <Switch defaultChecked />
-                    <small>Hide</small>
-                    {/* <small>Show</small> */}
+                    <Switch
+                      checked={switchStates.idNumber}
+                      onChange={() => handleSwitchToggle("idNumber")}
+                    />
+                    <small>{switchStates.idNumber ? "Hide" : "Show"}</small>
                   </div>
                 </div>
               </div>
             </li>
+            {/* Date of Birth */}
             <li className="form_group group">
               <div className="head f_flex">
                 <label className="label" htmlFor="date">
@@ -125,13 +154,16 @@ function Personal() {
                     <Checkbox>Internal</Checkbox>
                   </div>
                   <div className="switch a_flex">
-                    <Switch defaultChecked />
-                    <small>Hide</small>
-                    {/* <small>Show</small> */}
+                    <Switch
+                      checked={switchStates.dateOfBirth}
+                      onChange={() => handleSwitchToggle("dateOfBirth")}
+                    />
+                    <small>{switchStates.dateOfBirth ? "Hide" : "Show"}</small>
                   </div>
                 </div>
               </div>
             </li>
+            {/* Gender */}
             <li className="form_group group">
               <div className="head f_flex">
                 <label className="label" htmlFor="gender">
@@ -142,9 +174,11 @@ function Personal() {
                     <Checkbox>Internal</Checkbox>
                   </div>
                   <div className="switch a_flex">
-                    <Switch defaultChecked />
-                    <small>Hide</small>
-                    {/* <small>Show</small> */}
+                    <Switch
+                      checked={switchStates.gender}
+                      onChange={() => handleSwitchToggle("gender")}
+                    />
+                    <small>{switchStates.gender ? "Hide" : "Show"}</small>
                   </div>
                 </div>
               </div>
@@ -162,10 +196,14 @@ function Personal() {
                     </div>
                     <div className="switch a_flex">
                       <Switch
-                        defaultChecked={resumeSwitch}
-                        onChange={(checked) => setResumeSwitch(checked)}
+                        checked={switchStates[question.id.toString()]}
+                        onChange={() =>
+                          handleSwitchToggle(question.id.toString())
+                        }
                       />
-                      <small>{resumeSwitch ? "Hide" : "Show"}</small>
+                      <small>
+                        {switchStates[question.id] ? "Hide" : "Show"}
+                      </small>
                     </div>
                   </div>
                 </div>
