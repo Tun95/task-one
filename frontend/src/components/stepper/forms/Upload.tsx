@@ -23,7 +23,7 @@ function ImageUpload() {
             setSelectedImage(file);
             setImagePreview(imageUrl);
           } else {
-            alert("Image should have a 16:9 aspect ratio.");
+            alert("Image should have a 16:9 aspect ratio. (1920 x 1080)");
           }
         };
       } else {

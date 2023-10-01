@@ -39,7 +39,6 @@ function AdditionalQts() {
       question: "Have you ever been rejected by the UK embassy?",
       choice: "Yes/No",
     },
-    // Add more default questions here
   ]);
 
   const showAddModal = () => {
@@ -101,7 +100,7 @@ function AdditionalQts() {
       (question) => question.id !== questionId
     );
     setQuestions(updatedQuestions);
-    setEditQuestionVisible(false); // Close the edit section
+    setEditQuestionVisible(false);
   };
 
   console.log(questions);
