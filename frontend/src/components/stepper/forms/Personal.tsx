@@ -3,8 +3,15 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Checkbox, Switch } from "antd";
 import { useState } from "react";
 
+interface Question {
+  id: number;
+  question: string;
+}
+
 function Personal() {
   const [modalVisible, setModalVisible] = useState(false);
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [resumeSwitch, setResumeSwitch] = useState(true);
 
   const showModal = () => {
     setModalVisible(true);
@@ -12,6 +19,10 @@ function Personal() {
 
   const closeModal = () => {
     setModalVisible(false);
+  };
+
+  const addQuestion = (question: Question) => {
+    setQuestions([...questions, question]);
   };
   return (
     <div className="personal_info">
@@ -138,15 +149,39 @@ function Personal() {
                 </div>
               </div>
             </li>
-            {/* MAP NEW LIST */}
-            {/* <li></li> */}
+            {/* MAP NEW LIST HERE*/}
+            {questions.map((question, index) => (
+              <li key={index} className="form_group group">
+                <div className="head f_flex">
+                  <label className="label" htmlFor="residence">
+                    <span>{question.question} </span>
+                  </label>
+                  <div className="a_flex">
+                    <div className="check_box">
+                      <Checkbox>Internal</Checkbox>
+                    </div>
+                    <div className="switch a_flex">
+                      <Switch
+                        defaultChecked={resumeSwitch}
+                        onChange={(checked) => setResumeSwitch(checked)}
+                      />
+                      <small>{resumeSwitch ? "Hide" : "Show"}</small>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            ))}
           </ul>
           <div className="form_group">
             <button className="btn a_flex" onClick={showModal}>
               <PlusOutlined className="icon" />
               <span>Add a question</span>
             </button>
-            <CustomModal visible={modalVisible} onCancel={closeModal} />
+            <CustomModal
+              visible={modalVisible}
+              onCancel={closeModal}
+              onAddQuestion={addQuestion}
+            />
           </div>
         </div>
       </div>

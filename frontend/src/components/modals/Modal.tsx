@@ -1,13 +1,12 @@
-import { Modal } from "antd";
-import "./styles.scss";
+import { useState } from "react";
+import { Modal, Select, Checkbox } from "antd";
 import {
   CloseOutlined,
   UnorderedListOutlined,
   PlusOutlined,
   EditOutlined,
 } from "@ant-design/icons";
-import { Select, Checkbox } from "antd";
-import { useState } from "react";
+import "./styles.scss";
 
 type Option = {
   value: string;
@@ -17,9 +16,23 @@ type Option = {
 interface CustomModalProps {
   visible: boolean;
   onCancel: () => void;
+  onAddQuestion: (question: Question) => void;
 }
 
-export function CustomModal({ visible, onCancel }: CustomModalProps) {
+interface Question {
+  id: number;
+  duration: string;
+  question: string;
+  text: string;
+  choice: string;
+  disqualifyIfNo?: boolean;
+}
+
+export function CustomModal({
+  visible,
+  onCancel,
+  onAddQuestion,
+}: CustomModalProps) {
   const options: Option[] = [
     { value: "paragraph", label: "Paragraph" },
     { value: "short answer", label: "Short answer" },
@@ -34,7 +47,14 @@ export function CustomModal({ visible, onCancel }: CustomModalProps) {
 
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [showVideoModal, setShowVideoModal] = useState(false);
-
+  const [formData, setFormData] = useState<Question>({
+    id: 0,
+    duration: "",
+    question: "",
+    text: "",
+    choice: "",
+  });
+ 
   const handleChange = (value: string) => {
     setSelectedOption(value);
 
@@ -43,6 +63,65 @@ export function CustomModal({ visible, onCancel }: CustomModalProps) {
       setShowVideoModal(true);
     } else {
       setShowVideoModal(false);
+    }
+
+    // Update the choice field in formData
+    setFormData({
+      ...formData,
+      choice: value,
+    });
+  };
+
+  const handleAddQuestion = () => {
+    // Validate and create a new question object
+    if (selectedOption) {
+      let newQuestion: Question;
+
+      switch (selectedOption) {
+        case "paragraph":
+        case "short answer":
+        case "yes/no":
+        case "dropdown":
+        case "multiple choice":
+          newQuestion = {
+            id: Math.random(),
+            duration: "",
+            question: formData.question,
+            text: "",
+            choice: formData.choice,
+            disqualifyIfNo: false,
+          };
+          break;
+        default:
+          newQuestion = {
+            id: Math.random(),
+            duration: "",
+            question: formData.question,
+            text: "",
+            choice: formData.choice,
+          };
+      }
+
+      // If the selected option is 'yes/no', add disqualifyIfNo property
+      if (selectedOption === "yes/no") {
+        newQuestion.disqualifyIfNo = formData.disqualifyIfNo || false;
+      }
+
+      // Call the callback function to add the question
+      onAddQuestion(newQuestion);
+
+      // Reset the new question data and close the modal
+      setFormData({
+        id: 0,
+        duration: "",
+        question: "",
+        text: "",
+        choice: "",
+        disqualifyIfNo: false,
+      });
+      onCancel();
+    } else {
+      alert("Please select a question type.");
     }
   };
 
@@ -68,14 +147,25 @@ export function CustomModal({ visible, onCancel }: CustomModalProps) {
                 height: "45px",
               }}
               className="select"
-              onChange={handleChange}
+              onChange={handleChange} // Add this onChange handler
               options={options}
+              value={selectedOption} // Add this value prop
             />
           </div>
           <div className="form_group">
             <label htmlFor="question">Question</label>
             <span className="">
-              <input type="text" placeholder="Type here" />
+              <input
+                type="text"
+                placeholder="Type here"
+                value={formData.question}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    question: e.target.value,
+                  })
+                }
+              />
             </span>
           </div>
           {/* Yes/No */}
@@ -83,7 +173,17 @@ export function CustomModal({ visible, onCancel }: CustomModalProps) {
             <>
               <div className="form_group">
                 <div className="check_box">
-                  <Checkbox>Disqualify candidate if the answer is no</Checkbox>
+                  <Checkbox
+                    checked={formData.disqualifyIfNo}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        disqualifyIfNo: e.target.checked,
+                      })
+                    }
+                  >
+                    Disqualify candidate if the answer is no
+                  </Checkbox>
                 </div>
               </div>
             </>
@@ -98,7 +198,17 @@ export function CustomModal({ visible, onCancel }: CustomModalProps) {
                 </label>
                 <span className="a_flex choice_input">
                   <UnorderedListOutlined className="icon" />
-                  <input type="text" placeholder="Type here" />
+                  <input
+                    type="text"
+                    placeholder="Type here"
+                    value={formData.choice}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        choice: e.target.value,
+                      })
+                    }
+                  />
                   <PlusOutlined className="icon" />
                 </span>
                 <div className="check_box">
@@ -108,7 +218,17 @@ export function CustomModal({ visible, onCancel }: CustomModalProps) {
               <div className="form_group">
                 <label htmlFor="allowed">Max choice allowed</label>
                 <span className="">
-                  <input type="text" placeholder="Type here" />
+                  <input
+                    type="text"
+                    placeholder="Type here"
+                    value={formData.duration}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        duration: e.target.value,
+                      })
+                    }
+                  />
                 </span>
               </div>
             </>
@@ -123,7 +243,17 @@ export function CustomModal({ visible, onCancel }: CustomModalProps) {
                 </label>
                 <span className="a_flex choice_input">
                   <UnorderedListOutlined className="icon" />
-                  <input type="text" placeholder="Type here" />
+                  <input
+                    type="text"
+                    placeholder="Type here"
+                    value={formData.choice}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        choice: e.target.value,
+                      })
+                    }
+                  />
                   <PlusOutlined className="icon" />
                 </span>
                 <div className="check_box">
@@ -135,13 +265,14 @@ export function CustomModal({ visible, onCancel }: CustomModalProps) {
             </>
           )}
 
-          {/* Rest of your form */}
           <div className="form_group f_flex">
             <button className="btn delete a_flex">
               <CloseOutlined className="icon" />
               <span>Delete question</span>
             </button>
-            <button className="btn save">Save</button>
+            <button className="btn save" onClick={handleAddQuestion}>
+              Save
+            </button>
           </div>
         </div>
       </div>
@@ -155,15 +286,12 @@ export function CustomModal({ visible, onCancel }: CustomModalProps) {
   );
 }
 
-//Define the types
-type Question = {
-  id: number;
-  duration: string;
-  question: string;
-  text: string;
-  choice: string;
-};
-export function CustomVideoModal({ visible, onCancel }: CustomModalProps) {
+interface CustomVideoModalProps {
+  visible: boolean;
+  onCancel: () => void;
+}
+
+export function CustomVideoModal({ visible, onCancel }: CustomVideoModalProps) {
   const onSearch = (value: string) => {
     console.log("search:", value);
   };
@@ -199,17 +327,13 @@ export function CustomVideoModal({ visible, onCancel }: CustomModalProps) {
     },
   ]);
 
-  //===============
   // EDIT HANDLER
-  //===============
   const handleEditClick = (questionData: Question) => {
     setEditedQuestion(questionData);
     setEditQuestionVisible(true);
   };
 
-  //===============
   // SAVE HANDLER
-  //===============
   const handleSaveEdit = () => {
     // Find the index of the edited question in the questions array
     const questionIndex = questions.findIndex(
@@ -234,9 +358,7 @@ export function CustomVideoModal({ visible, onCancel }: CustomModalProps) {
     setEditQuestionVisible(false);
   };
 
-  //===============
   // DELETE HANDLER
-  //===============
   const handleDelete = (questionId: number) => {
     // Filter out the question with the given ID from the questions list
     const updatedQuestions = questions.filter(
@@ -258,7 +380,7 @@ export function CustomVideoModal({ visible, onCancel }: CustomModalProps) {
 
   return (
     <Modal
-      open={visible}
+      visible={visible}
       onCancel={onCancel}
       footer={null}
       centered
@@ -316,7 +438,7 @@ export function CustomVideoModal({ visible, onCancel }: CustomModalProps) {
                         text: e.target.value,
                       })
                     }
-                  />{" "}
+                  />
                 </div>
                 <div className="form_group f_flex select_form_group">
                   <input
@@ -329,7 +451,7 @@ export function CustomVideoModal({ visible, onCancel }: CustomModalProps) {
                         duration: e.target.value,
                       })
                     }
-                  />{" "}
+                  />
                   <span>
                     <Select
                       showSearch
@@ -371,7 +493,7 @@ export function CustomVideoModal({ visible, onCancel }: CustomModalProps) {
                   <button className="btn save" onClick={handleSaveEdit}>
                     Save
                   </button>
-                </div>{" "}
+                </div>
               </>
             )}
             <div className="form_group ">

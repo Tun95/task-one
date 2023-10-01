@@ -1,46 +1,42 @@
+import React, { useState } from "react";
 import {
   PlusOutlined,
   EditOutlined,
   UnorderedListOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
-import { CustomModal } from "../../modals/Modal";
-import { useState } from "react";
+import { CustomModal } from "../../modals/Modal"; // Import the CustomModal component
 
-// Define the types
-type Question = {
+interface Question {
   id: number;
-  type: string;
-  text: string;
+  question: string;
   choice: string;
-};
+  disqualifyIfNo?: boolean;
+  maxChoices?: string;
+}
 
 function AdditionalQts() {
   const [modalAddVisible, setModalAddVisible] = useState(false);
   const [editQuestionVisible, setEditQuestionVisible] = useState(false);
   const [editedQuestion, setEditedQuestion] = useState<Question>({
     id: 0,
-    type: "",
-    text: "",
+    question: "",
     choice: "",
   });
   const [questions, setQuestions] = useState<Question[]>([
     {
       id: 1,
-      type: "paragraph",
-      text: "Please tell me about yourself in less than 500 words",
+      question: "Please tell me about yourself in less than 500 words",
       choice: "paragraph",
     },
     {
       id: 2,
-      type: "Dropdown",
-      text: "Please select the year of graduation from the list below",
+      question: "Please select the year of graduation from the list below",
       choice: "Dropdown",
     },
     {
       id: 3,
-      type: "Yes/No",
-      text: "Have you ever been rejected by the UK embassy?",
+      question: "Have you ever been rejected by the UK embassy?",
       choice: "Yes/No",
     },
     // Add more default questions here
@@ -52,6 +48,18 @@ function AdditionalQts() {
 
   const closeAddModal = () => {
     setModalAddVisible(false);
+  };
+
+  const addQuestion = (question: Question) => {
+    // Set the choice property based on the selected option
+    const selectedOption = question.choice;
+    setQuestions([...questions, { ...question, choice: selectedOption }]);
+    // Clear the editedQuestion state when a new question is added
+    setEditedQuestion({
+      id: 0,
+      question: "",
+      choice: "",
+    });
   };
 
   //===============
@@ -70,7 +78,11 @@ function AdditionalQts() {
     setQuestions((prevQuestions) => {
       const updatedQuestions = prevQuestions.map((question) => {
         if (question.id === editedQuestion.id) {
-          return editedQuestion;
+          return {
+            ...question,
+            question: editedQuestion.question,
+            choice: editedQuestion.choice,
+          };
         }
         return question;
       });
@@ -78,12 +90,6 @@ function AdditionalQts() {
     });
 
     setEditQuestionVisible(false);
-    setEditedQuestion({
-      id: 0,
-      type: "",
-      text: "",
-      choice: "",
-    });
   };
 
   //===============
@@ -98,6 +104,7 @@ function AdditionalQts() {
     setEditQuestionVisible(false); // Close the edit section
   };
 
+  console.log(questions);
   return (
     <div className="additional_qts">
       <div className="box box_shadow">
@@ -109,9 +116,9 @@ function AdditionalQts() {
             <ul>
               {questions.map((question) => (
                 <li key={question.id}>
-                  <small className="small">{question.type}</small>
+                  <small className="small">{question.choice}</small>
                   <span className="f_flex">
-                    <h3>{question.text}</h3>
+                    <h3>{question.question}</h3>
                     <EditOutlined
                       className="edit"
                       onClick={() => handleEditClick(question)}
@@ -131,11 +138,11 @@ function AdditionalQts() {
                 <input
                   type="text"
                   placeholder="Type here"
-                  value={editedQuestion.text || ""}
+                  value={editedQuestion.question || ""}
                   onChange={(e) =>
                     setEditedQuestion({
                       ...editedQuestion,
-                      text: e.target.value,
+                      question: e.target.value,
                     })
                   }
                 />
@@ -180,7 +187,15 @@ function AdditionalQts() {
               <PlusOutlined className="icon" />
               <span>Add a question</span>
             </button>
-            <CustomModal visible={modalAddVisible} onCancel={closeAddModal} />
+            {/* Pass props to the CustomModal component */}
+            <CustomModal
+              visible={modalAddVisible}
+              onCancel={closeAddModal}
+              onAddQuestion={(question) => {
+                addQuestion(question);
+                closeAddModal(); // Close the modal after adding the question
+              }}
+            />
           </div>
         </div>
       </div>
